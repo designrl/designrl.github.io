@@ -145,23 +145,6 @@ dt-article figcaption b {
 
 <!--<script src="lib/jquery-1.12.4.min.js"></script>
 <script src="lib/mobile-detect.min.js"></script>-->
-<script src="lib/blazy.js"></script>
-<script>
-  // blazy code
-  var bLazy = new Blazy({
-    success: function(){
-      updateCounter();
-    }
-  });
-
-  // not needed, only here to illustrate amount of loaded images
-  var imageLoaded = 0;
-
-  function updateCounter() {
-    imageLoaded++;
-    console.log("blazy image loaded: "+imageLoaded);
-  }
-</script>
 <script src="lib/template.v1.js"></script>
 
 <script type="text/front-matter">
@@ -851,5 +834,21 @@ archivePrefix = "arXiv",
   journal={arXiv preprint arXiv:1809.09420},
   year={2018}
 }
+</script>
+<script src="lib/blazy.js"></script>
+<script>
+  // blazy code
+  var bLazy = new Blazy({
+    success: function(){
+      updateCounter();
+    }
+  });
 
+  // not needed, only here to illustrate amount of loaded images
+  var imageLoaded = 0;
+
+  function updateCounter() {
+    imageLoaded++;
+    console.log("blazy image loaded: "+imageLoaded);
+  }
 </script>
