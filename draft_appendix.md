@@ -53,7 +53,7 @@ We also tried to let the RL algorithm discover new designs without any constrain
 <figcaption style="text-align: left;">Without any design constraints, it develops very long rear legs so it can tumble over further down the map.</figcaption>
 </div>
 
-Using a lognormal scaling factor of $\exp(w_k)$ made it easier for the RL algorithm to come up with an extremely tall bipedal walker agent that “solves” the task by falling over forward to land near the end:
+Using a lognormal scaling factor of $\exp(w_k)$ made it easier for the RL algorithm to come up with an extremely tall bipedal walker agent that “solves” the task by falling over and landing at the end:
 
 <div style="text-align: center;">
 <video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard.lognormal.blooper.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
