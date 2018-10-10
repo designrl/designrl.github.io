@@ -127,7 +127,7 @@ Learning a better version of an agent's body not only helps achieve better perfo
 <figcaption style="text-align: left;">Plot of performance of best agent in the population over 100 random trials. Original version solved under 4600 generations (40 hours); learnable one solved under 1400 generations (12 hours).</figcaption>
 </div>
 
-In this environment, our agent generally learns to develop longer, thinner legs, with the exception in the real leg where it developed a thicker lower limb to serve as useful stability function for navigation. Its front legs, which are smaller and more manoeuvrable, also act as a sensor for dangerous obstacles ahead that complement its LIDAR sensors. While learning to develop this newer structure, it jointly learns a policy to solve the task in 30\% of the time it took the original, static version of the environment. The average scores over 100 rollouts for the learnable version is 335 $\pm$ 37 compared to the baseline score of 313 $\pm$ 53.
+In this environment, our agent generally learns to develop longer, thinner legs, with the exception in the rear leg where it developed a thicker lower limb to serve as useful stability function for navigation. Its front legs, which are smaller and more manoeuvrable, also act as a sensor for dangerous obstacles ahead that complement its LIDAR sensors. While learning to develop this newer structure, it jointly learns a policy to solve the task in 30\% of the time it took the original, static version of the environment. The average scores over 100 rollouts for the learnable version is 335 $\pm$ 37 compared to the baseline score of 313 $\pm$ 53.
 
 ### Optimize for both the task and desired design properties
 
