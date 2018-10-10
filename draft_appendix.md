@@ -41,3 +41,21 @@ and sample a new set of candidate solutions $w$ from updating the pdf using lear
 $\nabla_{\mu_{j}} \log N(w^i, \theta) = \frac{w_j^i - \mu_j}{\sigma_j^2},$ $\nabla_{\sigma_{j}} \log N(w^i, \theta) = \frac{(w_j^i - \mu_j)^2 - \sigma_j^2}{\sigma_j^3}$.
 
 For clarity, we use subscript $j$, to count across parameter space in $w$, and this is not to be confused with superscript $i$, used to count across each sampled member of the population of size $N$. Combining the last two equations, we can update $\mu_j$ and $\sigma_j$ at each generation via a gradient update.
+
+## Bloopers
+
+For those of you who made it this far, we would like to share some “negative results” of things that we tried but didn't work. In the experiments, we constrain the elements in the modified design to be $\pm$ 75\% of the original design's values. We accomplish this by defining a scaling factor for each learnable parameter as $1.0+0.75 \tanh(w_k)$ where $w_k$ is the $k^{\text{th}}$ element of the environment parameter vector, and multiply this scaling factor to the original design's value, and find that this approach works well as it usually preserves the intention and *essence* of the original design.
+
+We also tried to let the RL algorithm discover new designs without any constraints, and found that it would usually create longer rear legs during the initial learning phase designed so it can tumble over further down the map to achieve higher rewards.
+
+<div style="text-align: center;">
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedsmalllegs.lognormal.blooper.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: left;">Without any design constraints, it develops very long rear legs so it can tumble over further on the map.</figcaption>
+</div>
+
+Using a lognormal scaling factor of $\exp(w_k)$ made it easier for the RL algorithm to come up with an extremely tall bipedal walker agent that “solves” the task by falling over forward to land at the end of the map:
+
+<div style="text-align: center;">
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard.lognormal.blooper.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: left;">Whatever it takes...</figcaption>
+</div>
