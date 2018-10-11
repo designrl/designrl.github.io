@@ -149,7 +149,7 @@ This reward augmentation resulted in much a smaller agent that is still able to 
 <div style="text-align: center;">
 <!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhardsmalllegs_all.mp4" type="video/mp4"/></video>-->
 <video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhardsmalllegs_all.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
-<figcaption style="text-align: left;">Agent learns the smallest pair of legs that still can solve <i>BipedalWalkerHardcore-v2</i>.</figcaption>
+<figcaption style="text-align: left;">When rewarded for small leg size, the agent learned a lean minimal design where every inch matters. It also learned movements that appear more insect-like. Here, the agent learns the smallest pair of legs that still can solve <i>BipedalWalkerHardcore-v2</i>.</figcaption>
 </div>
 
 However, the agent is unable to solve the more difficult *BipedalWalkerHardcore* task using a similar small body structure, due to the various obstacles presented. Instead, it learns to set the widths of each leg part close to the lower bound, and instead learn the shortest heights of each leg part required to navigate, achieving a score of 312 $\pm$ 69. Here, the leg area used is 27\% of the original. 

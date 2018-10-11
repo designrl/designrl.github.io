@@ -57,5 +57,5 @@ Using a lognormal scaling factor of $\exp(w_k)$ made it easier for the RL algori
 
 <div style="text-align: center;">
 <video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard.lognormal.blooper.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
-<figcaption style="text-align: left;">Whatever it takes...</figcaption>
+<figcaption style="text-align: left;">If we remove all design constraints, the optimizer came up with a really tall bipedal walker robot that “solves” the task by simply falling over and landing near the exit.</figcaption>
 </div>
