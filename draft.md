@@ -12,7 +12,7 @@ While evolution shapes the overall structure of the body of a particular species
 
 <div style="text-align: center;">
 <table style="width:100%;" cellspacing="0" cellpadding="0"><tr>
-<td width="33%"><figcaption style="text-align: left;">Bipedal-v2<dt-cite key="bipedalwalker"></dt-cite>:</figcaption></td>
+<td width="33%"><figcaption style="text-align: left;">Original design<dt-cite key="bipedalwalker"></dt-cite>:</figcaption></td>
 <td width="33%"><figcaption style="text-align: left;">Learned design:</figcaption></td>
 <td width="34%"><figcaption style="text-align: left;">Optimized for smaller leg area:</figcaption></td>
 </tr></table>
