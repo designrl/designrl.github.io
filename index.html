@@ -206,13 +206,13 @@ dt-article figcaption b {
 <p>We are interested to investigate embodied cognition within the reinforcement learning (RL) framework. Most baseline tasks<dt-cite key="todorov2012mujoco,roboschool"></dt-cite> in the RL literature test an algorithm's ability to learn a policy to control the actions of an agent, with a predetermined body design, to accomplish a given task inside an environment. The design of the agent's body is rarely optimal for the task, and sometimes even intentionally designed to make policy search challenging<dt-cite key="roboschool"></dt-cite>. In this work, we explore enabling learning versions of an agent's body that are better suited for its task, jointly with its policy. We demonstrate that an agent can learn a better structure of its body that is not only better for its task, but also facilitates policy learning. We can even optimize our agent's body for certain desired characteristics, such as material usage. Our approach may help uncover design principles useful for assisted-design applications.</p>
 <hr>
 <h2>Related Work</h2>
-<p>There is a broad literature in evolutionary computation, artificial life and robotics devoted to studying, and modelling embodied cognition<dt-cite key="pfeifer2006body"></dt-cite>. In 1994, Karl Sims demonstrated that artificial evolution can produce novel morphologies that resemble organisms observed in nature<dt-cite key="sims1994evolving,sims1994evolving_MIT"></dt-cite>. Later works further investigated morphology evolution<dt-cite key="bongard2011morphological,leger1999automated"></dt-cite>, modular robotics<dt-cite key="ostergaard2003evolving,prokopenko2006evolving,zykov2007evolved"></dt-cite>, and evolving soft robots<dt-cite key="cheney2013unshackling,corucci2018evolving"></dt-cite> using indirect encoding<dt-cite key="neat,hyperneat"></dt-cite>. Theo Jansen<dt-cite key="jansen2008strandbeests"></dt-cite> used evolutionary computation to design physical <em>Strandbeests</em> creatures that can walk on their own consuming only wind energy.</p>
+<p>There is a broad literature in evolutionary computation, artificial life and robotics devoted to studying, and modelling embodied cognition<dt-cite key="pfeifer2006body"></dt-cite>. In 1994, Karl Sims demonstrated that artificial evolution can produce novel morphologies that resemble organisms observed in nature<dt-cite key="sims1994evolving,sims1994evolving_MIT"></dt-cite>. Later works further investigated morphology evolution<dt-cite key="leger1999automated,boxcar2d,bongard2011morphological,szerlip2013indirectly,szerlip2014steps,moore2014evolutionary"></dt-cite>, modular robotics<dt-cite key="lipson2000automatic,ostergaard2003evolving,prokopenko2006evolving,zykov2007evolved"></dt-cite>, and evolving soft robots<dt-cite key="cheney2013unshackling,corucci2018evolving"></dt-cite> using indirect encoding<dt-cite key="neat,hyperneat"></dt-cite>. Theo Jansen<dt-cite key="jansen2008strandbeests"></dt-cite> used evolutionary computation to design physical <em>Strandbeests</em> creatures that can walk on their own consuming only wind energy.</p>
 <div style="text-align: center;">
 <!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/related_work.mp4" type="video/mp4"/></video>-->
 <video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/related_work.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">Evolved Virtual Creatures<dt-cite key="sims1994evolving"></dt-cite>, Soft Robots<dt-cite key="cheney2013unshackling,corucci2018evolving"></dt-cite>, <i>Strandbeest</i><dt-cite key="jansen2008strandbeests"></dt-cite> and Passive Walkers<dt-cite key="mcgeer1990passive,collins2001three"></dt-cite>.</figcaption>
 </div>
-<p>Literature in the area of passive dynamics study robot designs that rely on natural swings of motion of body components instead of deploying and controlling motors at each joint<dt-cite key="mcgeer1990passive,collins2001three,paul2004morphology,collins2005efficient"></dt-cite>. Recent work in robotics investigates simultaneously optimizing body design and control of a legged robot<dt-cite key="ha2018computational"></dt-cite> using constraint-based modelling, which is related to our RL-based approach. While not directly related to agent design, machine learning-assisted approaches have been used to procedurally generate game environments that can also facilitate policy learning of game playing agents<dt-cite key="togelius2008experiment,summerville2018procedural,volz2018evolving,guzdial2018co"></dt-cite>.</p>
+<p>Literature in the area of passive dynamics study robot designs that rely on natural swings of motion of body components instead of deploying and controlling motors at each joint<dt-cite key="mcgeer1990passive,collins2001three,paul2004morphology,collins2005efficient"></dt-cite>. Recent work in robotics investigates simultaneously optimizing body design and control of a legged robot<dt-cite key="ha2017joint,ha2018computational"></dt-cite> using constraint-based modelling, which is related to our RL-based approach. Related to our work, <dt-cite key="geijtenbeek2013flexible,agrawal2014diverse"></dt-cite> employ CMA-ES <dt-cite key="cmaes"></dt-cite> to optimize over both the motion control and physical configuration of agents. A related recent work <dt-cite key="schaff2018jointly,schaff2018jointly_iclr_workshop"></dt-cite> employs RL to learn both the policy and design parameters in an alternating fashion, where a single shared policy controls a distribution of different designs, while in this work we simply treat both policy and design parameters the same way. While not directly related to agent design, machine learning-assisted approaches have been used to procedurally generate game environments that can also facilitate policy learning of game playing agents<dt-cite key="togelius2008experiment,millington2009artificial,summerville2018procedural,volz2018evolving,guzdial2018co"></dt-cite>.</p>
 <hr>
 <h2>Method</h2>
 <p>In this section, we describe the method used for learning a version of the agent's design better suited for its task jointly with its policy. In addition to the weight parameters of our agent's policy network, we will also parameterize the agent's environment, which includes the specification of the agent's body structure. This extra parameter vector, which may govern the properties of items such as width, length, radius, mass, and orientation of an agent's body parts and their joints, will also be treated as a learnable parameter. Hence the weights <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02691em;">w</span></span></span></span> we need to learn will be the parameters of the agent's policy network combined with the environment's parameterization vector. During a rollout, an agent initialized with <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02691em;">w</span></span></span></span> will be deployed in an environment that is also parameterized  with the same parameter vector <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02691em;">w</span></span></span></span>.</p>
@@ -309,6 +309,7 @@ def rollout(agent, envparams, env):
 <dt-appendix>
 <h2>Acknowledgments</h2>
 <p>We would like to thank Luke Metz and Douglas Eck for their thoughtful feedback. This article was prepared using the <a href="https://distill.pub">Distill</a> <a href="https://github.com/distillpub/template">template</a>.</p>
+<!-- acknowledge openai and oleg here -->
 <h2>Open Source Code</h2>
 <p>The code to reproduce experiments in this article will be released at a later date.</p>
 <h2>Reuse</h2>
@@ -695,7 +696,7 @@ def rollout(agent, envparams, env):
 }
 @book{leger1999automated,
   title={Automated synthesis and optimization of robot configurations: an evolutionary approach},
-  author={Leger, Chris and others},
+  author={Leger, Chris},
   year={1999},
   publisher={Carnegie Mellon University USA}
 }
@@ -788,12 +789,14 @@ def rollout(agent, envparams, env):
   title={Proximal policy optimization algorithms},
   author={Schulman, John and Wolski, Filip and Dhariwal, Prafulla and Radford, Alec and Klimov, Oleg},
   journal={arXiv preprint arXiv:1707.06347},
+  url = {https://arxiv.org/abs/1707.06347},
   year={2017}
 }
 @ARTICLE{DeepNeuroevolution2017,
     title = {Deep Neuroevolution: Genetic Algorithms Are a Competitive Alternative for Training Deep Neural Networks for Reinforcement Learning},
   author={Such, Felipe Petroski and Madhavan, Vashisht and Conti, Edoardo and Lehman, Joel and Stanley, Kenneth O and Clune, Jeff},
   journal={Preprint arXiv:1712.06567},
+  url = {https://arxiv.org/abs/1712.06567},
 archivePrefix = "arXiv",
    eprint = {1712.06567},
  keywords = {Computer Science - Neural and Evolutionary Computing, Computer Science - Learning},
@@ -804,12 +807,14 @@ archivePrefix = "arXiv",
   title={The surprising creativity of digital evolution: A collection of anecdotes from the evolutionary computation and artificial life research communities},
   author={Lehman, Joel and Clune, Jeff and Misevic, Dusan and Adami, Christoph and Beaulieu, Julie and Bentley, Peter J and Bernard, Samuel and Belson, Guillaume and Bryson, David M and Cheney, Nick and others},
   journal={arXiv preprint arXiv:1803.03453},
+  url = {https://arxiv.org/abs/1803.03453},
   year={2018}
 }
 @article{zoph2016neural,
   title={Neural architecture search with reinforcement learning},
   author={Zoph, Barret and Le, Quoc V},
   journal={arXiv preprint arXiv:1611.01578},
+  url = {https://arxiv.org/abs/1611.01578},
   year={2016}
 }
 @inproceedings{togelius2008experiment,
@@ -837,13 +842,97 @@ archivePrefix = "arXiv",
   title={Evolving Mario Levels in the Latent Space of a Deep Convolutional Generative Adversarial Network},
   author={Volz, Vanessa and Schrum, Jacob and Liu, Jialin and Lucas, Simon M and Smith, Adam and Risi, Sebastian},
   journal={arXiv preprint arXiv:1805.00728},
+  url = {https://arxiv.org/abs/1805.00728},
   year={2018}
 }
 @article{guzdial2018co,
   title={Co-Creative Level Design via Machine Learning},
   author={Guzdial, Matthew and Liao, Nicholas and Riedl, Mark},
   journal={arXiv preprint arXiv:1809.09420},
+  url = {https://arxiv.org/abs/1809.09420},
   year={2018}
+}
+@inproceedings{ha2017joint,
+  title={Joint optimization of robot design and motion parameters using the implicit function theorem},
+  author={Ha, Sehoon and Coros, Stelian and Alspach, Alexander and Kim, Joohyung and Yamane, Katsu},
+  booktitle={Robotics: Science and Systems},
+  year={2017}
+}
+@article{schaff2018jointly,
+  title={Jointly Learning to Construct and Control Agents using Deep Reinforcement Learning},
+  author={Schaff, Charles and Yunis, David and Chakrabarti, Ayan and Walter, Matthew R},
+  journal={arXiv preprint arXiv:1801.01432},
+  url = {https://arxiv.org/abs/1801.01432},
+  year={2018}
+}
+@article{
+schaff2018jointly_iclr_workshop,
+title={Jointly Learning to Construct and Control Agents using Deep Reinforcement Learning},
+author={Charles Schaff and David Yunis and Ayan Chakrabarti and Matthew R. Walter},
+journal={ICLR 2018 Workshop},
+year={2018},
+url="https://openreview.net/forum?id=SyfiiMZA-",
+}
+@article{lipson2000automatic,
+  title={Automatic design and manufacture of robotic lifeforms},
+  author={Lipson, Hod and Pollack, Jordan B},
+  journal={Nature},
+  volume={406},
+  number={6799},
+  pages={974},
+  year={2000},
+  publisher={Nature Publishing Group}
+}
+@inproceedings{szerlip2013indirectly,
+  title={Indirectly Encoded Sodarace for Artificial Life.},
+  author={Szerlip, Paul A and Stanley, Kenneth O},
+  booktitle={ECAL},
+  pages={218--225},
+  year={2013},
+  organization={MIT Press},
+  url="http://eplex.cs.ucf.edu/ecal13/demo/PCA.html",
+}
+@inproceedings{szerlip2014steps,
+  title={Steps toward a modular library for turning any evolutionary domain into an online interactive platform},
+  author={Szerlip, Paul A and Stanley, Kenneth O},
+  booktitle={H. Sayama and J. Rieffel and S. Risi and R. Doursat and H. Lipson, Artificial life 14: Proceedings of the Fourteenth International Conference on the Synthesis and Simulation of Living Systems},
+  pages={900--907},
+  year={2014},
+  organization={Citeseer}
+}
+@article{moore2014evolutionary,
+  title={Evolutionary robotics on the Web with WebGL and Javascript},
+  author={Moore, Jared and Clark, Anthony and McKinley, Philip},
+  journal={arXiv preprint arXiv:1406.3337},
+  url="http://jaredmmoore.com/WebGL_Visualizer/visualizer.html",
+  year={2014}
+}
+  @misc{boxcar2d,
+    author = {Ryan Weber },
+    title = {BoxCar2D},
+    year = 2010,
+    url = {http://boxcar2d.com/about.html},
+    urldate = {2018-11-01}
+  }
+@article{agrawal2014diverse,
+  title={Diverse Motions and Character Shapes for Simulated Skills},
+  author={Agrawal, Shailen and Shen, Shuo and van de Panne, Michiel},
+  journal={IEEE transactions on visualization and computer graphics},
+  volume={20},
+  number={10},
+  pages={1345--1355},
+  year={2014},
+  publisher={IEEE}
+}
+@article{geijtenbeek2013flexible,
+  title={Flexible muscle-based locomotion for bipedal creatures},
+  author={Geijtenbeek, Thomas and Van De Panne, Michiel and Van Der Stappen, A Frank},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={32},
+  number={6},
+  pages={206},
+  year={2013},
+  publisher={ACM}
 }
 </script>
 <script src="lib/blazy.js"></script>
