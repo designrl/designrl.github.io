@@ -1,6 +1,9 @@
 # Reinforcement Learning for Improving Agent Design
+by Károly Zsolnai-Fehér
 
-This repo contains the source for the article.
+[Original GitHub Repository](https://github.com/designrl/designrl.github.io)
+
+This repo contains the source for Károly's original article adapted to be served via Node.js on Glitch.
 
 ### Article
 

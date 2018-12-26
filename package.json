@@ -4,7 +4,11 @@
   "dependencies": {
     "markdown-it": "*",
     "markdown-it-katex": "*",
-    "markdown-it-center-text": "*"
+    "markdown-it-center-text": "*",
+    "express": "^4.16.4"
+  },
+  "scripts": {
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
