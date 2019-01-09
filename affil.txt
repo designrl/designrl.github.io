@@ -1,0 +1,14 @@
+  <div class="authors">
+    <div class="author">
+        <a class="name" href="https://twitter.com/hardmaru">David Ha</a>
+        <a class="affiliation" href="https://g.co/brain">Google Brain</a>
+    </div>
+  </div>
+  <div class="date">
+    <div class="month">Oct 12</div>
+    <div class="year">2018</div>
+  </div>
+  <div class="date">
+    <div class="month">Download</div>
+    <div class="year" style="color: #FF6C00;"><a href="https://arxiv.org/" target="_blank">PDF</a></div>
+  </div>

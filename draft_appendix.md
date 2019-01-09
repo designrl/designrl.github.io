@@ -2,7 +2,22 @@
 
 We would like to thank Luke Metz and Douglas Eck for their thoughtful feedback. This article was prepared using the [Distill](https://distill.pub) [template](https://github.com/distillpub/template).
 
-<!-- acknowledge openai and oleg here -->
+<h3 id="citation">Citation</h3>
+
+For attribution in academic contexts, please cite this work as
+
+<pre class="citation short">David Ha, "Reinforcement Learning for Improving Agent Design", 2018.</pre>
+
+BibTeX citation
+
+<pre class="citation long">@article{Ha2018designrl,
+  author = {David Ha},
+  title  = {Reinforcement Learning for Improving Agent Design},
+  eprint = {arXiv:1810.03779},
+  url    = {https://designrl.github.io},
+  note   = "\url{https://designrl.github.io}",
+  year   = {2018}
+}</pre>
 
 ## Open Source Code
 
