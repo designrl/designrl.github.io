@@ -21,7 +21,7 @@ BibTeX citation
 
 ## Open Source Code
 
-The code to reproduce experiments in this article will be released at a later date.
+The instructions to reproduce the experiments in this work is available [here](https://github.com/hardmaru/astool).
 
 ## Reuse
 
