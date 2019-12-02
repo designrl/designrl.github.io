@@ -86,11 +86,11 @@ $J(\theta) = E_{\theta}[R(w)] = \int R(w) \; \pi(w, \theta) \; dw$
 
 Using the *log-likelihood trick* allows us to write the gradient of $J(\theta)$ with respect to $\theta$:
 
-$\nabla_{\theta} J(\theta) = E_{\theta}[ \; R(w)  \; \nabla_{\theta} \log \pi(w, \theta) \; ]$.
+$\nabla_{\theta} J(\theta) = E_{\theta}[ \; R(w)  \; \nabla_{\theta} \log \pi(w, \theta) \; ]$
 
 In a population size of $N$, where we have solutions $w^1$, $w^2$, ..., $w^N$, we can estimate this as:
 
-$\nabla_{\theta} J(\theta) \approx \frac{1}{N} \sum_{i=1}^{N} \; R(w^i)  \; \nabla_{\theta} \log \pi(w^i, \theta)$.
+$\nabla_{\theta} J(\theta) \approx \frac{1}{N} \sum_{i=1}^{N} \; R(w^i)  \; \nabla_{\theta} \log \pi(w^i, \theta)$
 
 With this approximated gradient $\nabla_{\theta} J(\theta)$, we then can optimize $\theta$ using gradient ascent:
 
