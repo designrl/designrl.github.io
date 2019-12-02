@@ -25,13 +25,19 @@ While evolution shapes the overall structure of the body of a particular species
 <img src="assets/img/biped_hard.png" style="display: block; margin: auto; width: 100%;"/>
 </div>
 
-We are interested to investigate embodied cognition within the reinforcement learning (RL) framework. Most baseline tasks<dt-cite key="todorov2012mujoco,roboschool"></dt-cite> in the RL literature test an algorithm's ability to learn a policy to control the actions of an agent, with a predetermined body design, to accomplish a given task inside an environment. The design of the agent's body is rarely optimal for the task, and sometimes even intentionally designed to make policy search challenging<dt-cite key="roboschool"></dt-cite>. In this work, we explore enabling learning versions of an agent's body that are better suited for its task, jointly with its policy. We demonstrate that an agent can learn a better structure of its body that is not only better for its task, but also facilitates policy learning. We can even optimize our agent's body for certain desired characteristics, such as material usage. Our approach may help uncover design principles useful for assisted-design applications.
+We are interested to investigate embodied cognition within the reinforcement learning (RL) framework. Most baseline tasks<dt-cite key="todorov2012mujoco,roboschool"></dt-cite> in the RL literature test an algorithm's ability to learn a policy to control the actions of an agent, with a predetermined body design, to accomplish a given task inside an environment. The design of the agent's body is rarely optimal for the task, and sometimes even intentionally designed to make policy search challenging. In this work, we explore enabling learning versions of an agent's body that are better suited for its task, jointly with its policy. We demonstrate that an agent can learn a better structure of its body that is not only better for its task, but also facilitates policy learning. We can even optimize our agent's body for certain desired characteristics, such as material usage. Our approach may help uncover design principles useful for assisted-design.
+
+Furthermore, we believe the ability to learn useful morphology is an important area for the advancement of AI. Although morphology learning originally initiated from the field of evolutionary computation, there has also been great advances in RL in recent years, and we believe much of what happens in ALife should be in principle be of interest to the RL community and vice versa, since learning and evolution are just two sides of the same coin.
+
+We believe that conducting experiments using standardized simulation environments facilitate the communication of ideas across disciplines, and for this reason we design our experiments based on applying ideas from ALife, namely morphology learning, to standardized tasks in the OpenAI Gym environment, a popular testbed for conducting experiments in the RL community. We decide to use standardized Gym environments such as Ant (based on Bullet physics engine) and Bipedal Walker (based on Box2D) not only for their simplicity, but also because their difficulty is well-understood due to the large number of RL publications that use them as benchmarks. As we shall see later, the *BipedalWalkerHardcore-v2* task, while simple looking, is especially difficult to solve with modern Deep RL methods. By applying simple morphology learning concepts from ALife, we are able to make a difficult task solvable with much fewer compute resources. We also made the code for augmenting OpenAI Gym for morphology learning, along with all pretrained models for reproducing results in this paper available.
+
+We hope this paper can serve as a catalyst to precipitate a cultural shift in both fields and encourage researchers to open up our minds to each other. By drawing ideas from ALife and demonstrating them in the OpenAI Gym platform used by RL, we hope this work can set an example to bring both the RL and ALife communities closer together to find synergies and push the AI field forward.
 
 ______
 
 ## Related Work
 
-There is a broad literature in evolutionary computation, artificial life and robotics devoted to studying, and modelling embodied cognition<dt-cite key="pfeifer2006body"></dt-cite>. In 1994, Karl Sims demonstrated that artificial evolution can produce novel morphologies that resemble organisms observed in nature<dt-cite key="sims1994evolving,sims1994evolving_MIT"></dt-cite>. Later works further investigated morphology evolution<dt-cite key="leger1999automated,boxcar2d,bongard2011morphological,szerlip2013indirectly,szerlip2014steps,moore2014evolutionary"></dt-cite>, modular robotics<dt-cite key="lipson2000automatic,ostergaard2003evolving,prokopenko2006evolving,zykov2007evolved"></dt-cite>, and evolving soft robots<dt-cite key="cheney2013unshackling,corucci2018evolving"></dt-cite> using indirect encoding<dt-cite key="neat,hyperneat"></dt-cite>. Theo Jansen<dt-cite key="jansen2008strandbeests"></dt-cite> used evolutionary computation to design physical *Strandbeests* creatures that can walk on their own consuming only wind energy.
+There is a broad literature in evolutionary computation, artificial life and robotics devoted to studying, and modelling embodied cognition<dt-cite key="pfeifer2006body"></dt-cite>. In 1994, Karl Sims demonstrated that artificial evolution can produce novel morphologies that resemble organisms observed in nature<dt-cite key="sims1994evolving,sims1994evolving_MIT"></dt-cite>. Later works further investigated morphology evolution<dt-cite key="bongard2011morphological,auerbach2012relationship,auerbach2014environmental,leger1999automated,szerlip2013indirectly,szerlip2014steps,moore2014evolutionary,boxcar2d,auerbach2014robogen"></dt-cite>, modular robotics<dt-cite key="lipson2000automatic,ostergaard2003evolving,prokopenko2006evolving,zykov2007evolved"></dt-cite>, and evolving soft robots<dt-cite key="cheney2013unshackling,corucci2018evolving"></dt-cite> using indirect encoding<dt-cite key="neat,hyperneat,auerbach2010evolving,auerbach2011evolving,auerbach2010dynamic"></dt-cite>.
 
 <div style="text-align: center;">
 <!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/related_work.mp4" type="video/mp4"/></video>-->
@@ -39,7 +45,9 @@ There is a broad literature in evolutionary computation, artificial life and rob
 <figcaption style="text-align: left;">Evolved Virtual Creatures<dt-cite key="sims1994evolving"></dt-cite>, Soft Robots<dt-cite key="cheney2013unshackling,corucci2018evolving"></dt-cite>, <i>Strandbeest</i><dt-cite key="jansen2008strandbeests"></dt-cite> and Passive Walkers<dt-cite key="mcgeer1990passive,collins2001three"></dt-cite>.</figcaption>
 </div>
 
-Literature in the area of passive dynamics study robot designs that rely on natural swings of motion of body components instead of deploying and controlling motors at each joint<dt-cite key="mcgeer1990passive,collins2001three,paul2004morphology,collins2005efficient"></dt-cite>. Recent work in robotics investigates simultaneously optimizing body design and control of a legged robot<dt-cite key="ha2017joint,ha2018computational"></dt-cite> using constraint-based modelling, which is related to our RL-based approach. Related to our work, <dt-cite key="geijtenbeek2013flexible,agrawal2014diverse"></dt-cite> employ CMA-ES <dt-cite key="cmaes"></dt-cite> to optimize over both the motion control and physical configuration of agents. A related recent work <dt-cite key="schaff2018jointly,schaff2018jointly_iclr_workshop"></dt-cite> employs RL to learn both the policy and design parameters in an alternating fashion, where a single shared policy controls a distribution of different designs, while in this work we simply treat both policy and design parameters the same way. While not directly related to agent design, machine learning-assisted approaches have been used to procedurally generate game environments that can also facilitate policy learning of game playing agents<dt-cite key="togelius2008experiment,millington2009artificial,summerville2018procedural,volz2018evolving,guzdial2018co"></dt-cite>.
+Literature in the area of passive dynamics study robot designs that rely on natural swings of motion of body components instead of deploying and controlling motors at each joint <dt-cite key="mcgeer1990passive,collins2001three,paul2004morphology,collins2005efficient"></dt-cite>. Notably, artist Theo Jansen <dt-cite key="jansen2008strandbeests"></dt-cite> also employed evolutionary computation to design physical *Strandbeests* that can walk on their own consuming only wind energy to raise environmental awareness.
+
+Recent works in robotics investigate simultaneously optimizing body design and control of a legged robot <dt-cite key="ha2017joint,ha2018computational"></dt-cite> using constraint-based modelling, which is related to our RL-based approach. Related to our work,  <dt-cite key="geijtenbeek2013flexible,agrawal2014diverse"></dt-cite> employ CMA-ES <dt-cite key="cmaes"></dt-cite> to optimize over both the motion control and physical configuration of agents. A related recent work <dt-cite key="schaff2018jointly,schaff2018jointly_iclr_workshop"></dt-cite> employs RL to learn both the policy and design parameters in an alternating fashion, where a single shared policy controls a distribution of different designs, while in this work we simply treat both policy and design parameters the same way.
 
 ______
 
@@ -47,7 +55,7 @@ ______
 
 In this section, we describe the method used for learning a version of the agent's design better suited for its task jointly with its policy. In addition to the weight parameters of our agent's policy network, we will also parameterize the agent's environment, which includes the specification of the agent's body structure. This extra parameter vector, which may govern the properties of items such as width, length, radius, mass, and orientation of an agent's body parts and their joints, will also be treated as a learnable parameter. Hence the weights $w$ we need to learn will be the parameters of the agent's policy network combined with the environment's parameterization vector. During a rollout, an agent initialized with $w$ will be deployed in an environment that is also parameterized  with the same parameter vector $w$.
 
-The goal is to learn $w$ to maximize the expected cumulative reward, $E[R(w)]$, of an agent acting on a policy with parameters $w$ in an environment governed by the same $w$. In our approach, we search for $w$ using a population-based policy gradient method based on Section 6 of Williams' 1992 REINFORCE<dt-cite key="williams1992"></dt-cite>. The Appendix section provides an overview of this algorithm.
+The goal is to learn $w$ to maximize the expected cumulative reward, $E[R(w)]$, of an agent acting on a policy with parameters $w$ in an environment governed by the same $w$. In our approach, we search for $w$ using a population-based policy gradient method based on Section 6 of Williams' 1992 REINFORCE<dt-cite key="williams1992"></dt-cite>. The next section provides an overview of this algorithm.
 
 <div style="text-align: center;">
 <dt-code block language="python">
@@ -66,7 +74,35 @@ def rollout(agent, envparams, env):
 <figcaption style="text-align: left;">Using a modified OpenAI Gym<dt-cite key="openai_gym"></dt-cite>framework, we parameterize parts of an environment, and allow an agent to modify its environment before a rollout, and also augment its reward based on these parameters.</figcaption>
 </div>
 
-Armed with the ability to change the design configuration of an agent's own body, we also wish to explore encouraging the agent to challenge itself by rewarding it for trying more difficult designs. For instance, carrying the same payload using smaller legs may result in a higher reward than using larger legs. Hence the reward given to the agent may also be augmented according to its parameterized environment vector.
+Armed with the ability to change the design configuration of an agent's own body, we also wish to explore encouraging the agent to challenge itself by rewarding it for trying more difficult designs. For instance, carrying the same payload using smaller legs may result in a higher reward than using larger legs. Hence the reward given to the agent may also be augmented according to its parameterized environment vector. We will discuss reward augmentation to optimize for desirable design properties later on in more detail later on.
+
+______
+
+## Overview of Population-based Policy Gradient Method (REINFORCE)
+
+In this section we provide an overview of the population-based policy gradient method described in Section 6 of William's REINFORCE<dt-cite key="williams1992"></dt-cite> paper for learning a parameter vector $w$ in a reinforcement learning environment. In this approach, $w$ is sampled from a probability distribution $\pi(w, \theta)$ parameterized by $\theta$. We define the expected cumulative reward $R$ as:
+
+$J(\theta) = E_{\theta}[R(w)] = \int R(w) \; \pi(w, \theta) \; dw$
+
+Using the *log-likelihood trick* allows us to write the gradient of $J(\theta)$ with respect to $\theta$:
+
+$\nabla_{\theta} J(\theta) = E_{\theta}[ \; R(w)  \; \nabla_{\theta} \log \pi(w, \theta) \; ]$.
+
+In a population size of $N$, where we have solutions $w^1$, $w^2$, ..., $w^N$, we can estimate this as:
+
+$\nabla_{\theta} J(\theta) \approx \frac{1}{N} \sum_{i=1}^{N} \; R(w^i)  \; \nabla_{\theta} \log \pi(w^i, \theta)$.
+
+With this approximated gradient $\nabla_{\theta} J(\theta)$, we then can optimize $\theta$ using gradient ascent:
+
+$\theta \rightarrow \theta + \alpha \nabla_{\theta} J(\theta)$
+
+and sample a new set of candidate solutions $w$ from updating the pdf using learning rate $\alpha$. We follow the approach in REINFORCE where $\pi$ is modelled as a factored multi-variate normal distribution. Williams derived closed-form formulas of the gradient $\nabla_{\theta} \log \pi(w^i, \theta)$. In this special case, $\theta$ will be the set of mean $\mu$ and standard deviation $\sigma$ parameters. Therefore, each element of a solution can be sampled from a univariate normal distribution $w_j \sim N(\mu_j, \sigma_j)$. Williams derived the closed-form formulas for the $\nabla_{\theta} \log N(z^i, \theta)$ term for each individual $\mu$ and $\sigma$ element of vector $\theta$ on each solution $i$ in the population:
+
+$\nabla_{\mu_{j}} \log N(w^i, \theta) = \frac{w_j^i - \mu_j}{\sigma_j^2},$ $\nabla_{\sigma_{j}} \log N(w^i, \theta) = \frac{(w_j^i - \mu_j)^2 - \sigma_j^2}{\sigma_j^3}$.
+
+For clarity, we use subscript $j$, to count across parameter space in $w$, and this is not to be confused with superscript $i$, used to count across each sampled member of the population of size $N$. Combining the last two equations, we can update $\mu_j$ and $\sigma_j$ at each generation via a gradient update.
+
+We note that there is a connection between population-based REINFORCE, a population-based policy gradient method, and particular formulations of Evolution Strategies <dt-cite key="rechenberg1978evolutionsstrategien,schwefel1981numerical"></dt-cite>, namely ones that are not elitist. For instance, Natural Evolution Strategies (NES) <dt-cite key="pepg,wierstra2008natural"></dt-cite> and OpenAI-ES <dt-cite key="openai_es"></dt-cite> are closely based on Sec. 6 of REINFORCE. There is also a connection between natural gradients (computed using NES) and CMA-ES <dt-cite key="cmaes"></dt-cite>. We refer to Akimoto et al. <dt-cite key="akimoto2012theoretical"></dt-cite> for a detailed theoretical treatment and discussion about the connection between CMA-ES and natural gradients. 
 
 ______
 
@@ -85,7 +121,11 @@ ______
 <video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/ant_views.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 </div>
 
-In this work, we experiment on continuous control environments from Roboschool<dt-cite key="roboschool"></dt-cite>, based on the open source Bullet<dt-cite key="pybullet"></dt-cite> physics engine, and the Box2D<dt-cite key="box2d"></dt-cite> section of the OpenAI Gym<dt-cite key="openai_gym"></dt-cite> set of environments. The *RoboschoolAnt-v1*<dt-fn>A compatible version of this environment is also available in PyBullet which was used for visualization.</dt-fn> environment features a four-legged agent called the *Ant*. The body is supported by 4 legs, and each leg consists of 3 parts which are controlled by 2 motor joints. The bottom right diagram in the below figure describes the initial orientation of the agent.<dt-fn>The length of each part of a leg is controlled by the $\Delta x$ and $\Delta y$ distances from its joint connection. A size parameter also controls the radius of each leg part.</dt-fn>
+In this work, we experiment on continuous control environments from Roboschool<dt-cite key="roboschool"></dt-cite>, based on the open source Bullet<dt-cite key="pybullet"></dt-cite> physics engine, and the Box2D<dt-cite key="box2d"></dt-cite> section of the OpenAI Gym<dt-cite key="openai_gym"></dt-cite> set of environments. For simplicity, we first present results of anecdotal examples obtained over a single representative experimental run to convey qualitative results such as morphology and its relationship to performance. A more comprehensive quantitative study based on multiple runs using different random seeds will be presented in a later section.
+
+The *RoboschoolAnt-v1*<dt-fn>A compatible version of this environment is also available in PyBullet which was used for visualization.</dt-fn> environment features a four-legged agent called the *Ant*. The body is supported by 4 legs, and each leg consists of 3 parts which are controlled by 2 motor joints. The bottom right diagram in the below figure describes the initial orientation of the agent.<dt-fn>The length of each part of a leg is controlled by the $\Delta x$ and $\Delta y$ distances from its joint connection. A size parameter also controls the radius of each leg part.</dt-fn>
+
+In our experiment, we keep the volumetric mass density of all materials, along with the parameters of the motor joints identical to the original environment, and allow the 36 parameters (3 parameters per leg part, 3 leg parts per leg, 4 legs in total) to be learned. In particular, we allow each part to be scaled to a range of $\pm$ 75\% of its original value. This allows us to keep the sign and direction for each part to preserve the original intended structure of the design.
 
 <div style="text-align: center;">
 <img src="assets/img/ant_orig.jpg" style="display: block; margin: auto; width: 100%;"/>
@@ -107,6 +147,10 @@ The Bipedal Walker series of environments is based on the Box2D<dt-cite key="box
 </div>
 
 Keeping the head payload constant, and also keeping the density of materials and the configuration of the motor joints the same as the original environment, we only allow the lengths and widths for each of the 4 leg parts to be learnable, subject to the same range limit of $\pm$ 75\% of the original design. In the original environment, the agent learns a policy that is reminiscent of a joyful skip across the terrain, achieving an average score of 347. In the learned version, the agent's policy is to hop across the terrain using its legs as a pair of springs, achieving a higher average score of 359.
+
+In our experiments, all agents were implemented using 3 layer fully-connected networks with $\tanh$ activations. The agent in *RoboschoolAnt-v1* has 28 inputs and 8 outputs, all bounded between $-1$ and $+1$, with hidden layers of 64 and 32 units. The agents in *BipedalWalker-v2* and *BipedalWalkerHardcore-v2* has 24 inputs and 4 outputs all bounded between $-1$ and $+1$, with 2 hidden layers of 40 units each.
+
+Our population-based training experiments were conducted on 96-CPU core machines. Following the approach described in <dt-cite key="stablees"></dt-cite>, we used a population size of 192, and had each agent perform the task 16 times with different initial random seeds. The agent's reward signal used by the policy gradient method is the average reward of the 16 rollouts. The most challenging BipedalWalkerHardcore agents were trained for 10000 generations, while the easier BipedalWalker and Ant agents were trained for 5000 and 3000 generations respectively. As done in <dt-cite key="stablees"></dt-cite>, we save the parameters of the agent that achieves the best average cumulative reward during its entire training history.
 
 ### Joint learning of body design facilitates policy learning
 
@@ -156,6 +200,46 @@ However, the agent is unable to solve the more difficult *BipedalWalkerHardcore*
 
 ______
 
+## Results over Multiple Experimental Runs
+
+In the previous sections, for simplicity, we have presented results over a single representative experimental run to convey qualitative results such as morphology description corresponding to average score achieved. Running the experiment from scratch with a different random seed may generate different morphology designs and different policies that lead to different performance scores. To demonstrate that morphology learning does indeed improve the performance of the agent over multiple experimental runs, we run each experiment 10 times and report the full range of average scores obtained in the two tables below:
+
+<div style="text-align: center;">
+<img src="assets/fig/multi_run_avg.png" style="display: block; margin: auto; width: 100%;"/>
+<figcaption style="text-align: left;">Summary of results for each experiment over 10 independent runs.</figcaption>
+<img src="assets/fig/multi_run_full.png" style="display: block; margin: auto; width: 100%;"/>
+<figcaption style="text-align: left;">Full results from each of the 10 experimental trials. Each number is the average score of the trained agent over 100 rollouts in the environment.</figcaption>
+</div>
+
+From multiple independent experimental runs, we see that morphology learning consistently produces higher scores over the normal task.
+
+We also visualize the variations of morphology designs over different runs in the following figure to get a sense of the variations of morphology that can be discovered during training:
+
+<div style="text-align: center;">
+<img src="assets/fig/multi_run_results.png" style="display: block; margin: auto; width: 100%;"/>
+<figcaption style="text-align: left;">Examples of learned morphology in Run #9. On Biped (top), the agent develops a thicker but short rear lower limb. On Biped Hardcore (bottom), it also develops a larger rear leg, but its upper thigh is noticeably larger.</figcaption>
+</div>
+
+As these models may take up to several days to train for a particular experiment on a powerful 96-core CPU machine, it may be costly for the reader to fully reproduce the variation of results here, especially when 10 machines running the same experiment with different random seeds are required. We also include all pretrained models from multiple independent runs in the GitHub repository containing the code to reproduce this paper. The interested reader can examine the variations in more detail using the pretrained models.
+
+<div style="text-align: center;">
+<table style="width:100%;" cellspacing="0" cellpadding="0"><tr>
+  <tr>
+  <td><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard.a.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
+  <td><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard.b.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
+  <td><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard.c.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
+  </tr>
+  <tr>
+  <td><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhardsmalllegs.a.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
+  <td><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhardsmalllegs.b.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
+  <td><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhardsmalllegs.c.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
+  </tr>
+</table>
+<figcaption style="text-align: left;">Variations of designs in <i>BipedalWalkerHardcore-v2</i> (top) and also rewarding the agent for smaller legs (bottom).</figcaption>
+</div>
+
+______
+
 ## Discussion and Future Work
 
 We have shown that allowing a simple population-based policy gradient method to learn not only the policy, but also a small set of parameters describing the environment, such as its body, offer many benefits. By allowing the agent's body to adapt to its task within some constraints, it can learn policies that are not only better for its task, but also learn them more quickly.
@@ -168,8 +252,26 @@ In this work we have only explored using a simple population-based policy gradie
 
 Separation of policy learning and body design into inner loop and outer loop will also enable the incorporation of evolution-based approaches to tackle the vast search space of morphology design, while utilizing efficient RL-based methods for policy learning. The limitations of the current approach is that our RL algorithm can learn to optimize only existing design properties of an agent's body, rather than learn truly novel morphology in the spirit of Karl Sims' *Evolving Virtual Creatures*<dt-cite key="sims1994evolving"></dt-cite>.
 
-Nevertheless, our approach of optimizing the specifications of an existing design might be more practical for many applications. An evolutionary algorithm might come up with trivial designs and corresponding simple policies that outperform designs we actually want -- for instance, a large ball that rolls forward will easily outperforming the best bipedal walkers, but this might not be useful to a game designer who simply wants to optimize the dimensions of an existing robot character for a video game. Due to the vast search space of morphology, a search algorithm can easily come up with a trivial, but unrealistic or unusable design that exploits its simulation environment<dt-cite key="lehman2018surprising"></dt-cite>, which may be why subsequent morphology-evolution approaches constrain the search space of the agent's morphology, such as constraining to the space of soft-body voxels<dt-cite key="cheney2013unshackling"></dt-cite> or constraining to a set of possible pipe frame connection settings<dt-cite key="jansen2008strandbeests"></dt-cite>.
+Nevertheless, our approach of optimizing the specifications of an existing design might be more practical for many applications. An evolutionary algorithm might come up with trivial designs and corresponding simple policies that outperform designs we actually want -- for instance, a large ball that rolls forward will easily outperforming the best bipedal walkers, but this might not be useful to a game designer who simply wants to optimize the dimensions of an existing robot character for a video game. Due to the vast search space of morphology, a search algorithm can easily come up with a trivial, but unrealistic or unusable design that exploits its simulation environment<dt-cite key="lehman2018surprising"></dt-cite>, which may be why subsequent morphology-evolution approaches constrain the search space of the agent's morphology, such as constraining to the space of soft-body voxels<dt-cite key="cheney2013unshackling"></dt-cite> or constraining to a set of possible pipe frame connection settings<dt-cite key="jansen2008strandbeests"></dt-cite>. We note that unrealistic designs may also result in our approach, if we do not constrain the learned dimensions to be within $\pm$ 75\% of its original value. For some interesting examples of what REINFORCE discovers without any constraints, please see the next section.
 
-Just as REINFORCE<dt-cite key="williams1992"></dt-cite> can also be applied to the discrete search problem of neural network architecture designs<dt-cite key="zoph2016neural"></dt-cite>, similar RL-based approaches could be used for novel morphology design -- not simply for augmenting and improving existing designs like in this work. We believe the ability to learn useful morphology is an important area for the advancement of AI. Although morphology learning originally initiated from the field of evolutionary computation, we hope this work will engage the RL community to investigate the concept further and encourage idea exchange across communities.
+Just as REINFORCE<dt-cite key="williams1992"></dt-cite> can also be applied to the discrete search problem of neural network architecture designs<dt-cite key="zoph2016neural"></dt-cite>, similar RL-based approaches could be used for novel morphology design -- not simply for improving an existing design like in this work. We believe the ability to learn useful morphology is an important area for the advancement of AI. Although morphology learning originally initiated from the field of evolutionary computation, we hope this work will engage the RL community to investigate the concept further and encourage idea exchange across communities.
 
-*If you would like to discuss any issues or give feedback regarding this work, please visit the [GitHub](https://github.com/designrl/designrl.github.io/issues) repository of this article.*
+______
+
+## Bloopers
+
+For those of you who made it this far, we would like to share some “negative results” of things that we tried but didn't work. In the experiments, we constrain the elements in the modified design to be $\pm$ 75\% of the original design's values. We accomplish this by defining a scaling factor for each learnable parameter as $1.0+0.75 \tanh(w_k)$ where $w_k$ is the $k^{\text{th}}$ element of the environment parameter vector, and multiply this scaling factor to the original design's value, and find that this approach works well as it usually preserves the intention and *essence* of the original design.
+
+We also tried to let the RL algorithm discover new designs without any constraints, and found that it would usually create longer rear legs during the initial learning phase designed so it can tumble over further down the map to achieve higher rewards.
+
+<div style="text-align: center;">
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedsmalllegs.lognormal.blooper.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: left;">Without any design constraints, it develops very long rear legs so it can finish further down the map.</figcaption>
+</div>
+
+Using a lognormal scaling factor of $\exp(w_k)$ made it easier for the RL algorithm to come up with an extremely tall bipedal walker agent that “solves” the task by simply falling over and landing at the exit:
+
+<div style="text-align: center;">
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard.lognormal.blooper.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: left;">If we remove all design constraints, the optimizer came up with a really tall bipedal walker robot that “solves” the task by simply falling over and landing near the exit.</figcaption>
+</div>
