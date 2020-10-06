@@ -40,8 +40,8 @@ ______
 There is a broad literature in evolutionary computation, artificial life and robotics devoted to studying, and modelling embodied cognition<dt-cite key="pfeifer2006body"></dt-cite>. In 1994, Karl Sims demonstrated that artificial evolution can produce novel morphologies that resemble organisms observed in nature<dt-cite key="sims1994evolving,sims1994evolving_MIT"></dt-cite>. Later works further investigated morphology evolution<dt-cite key="bongard2011morphological,auerbach2012relationship,auerbach2014environmental,leger1999automated,szerlip2013indirectly,szerlip2014steps,moore2014evolutionary,boxcar2d,auerbach2014robogen"></dt-cite>, modular robotics<dt-cite key="lipson2000automatic,ostergaard2003evolving,prokopenko2006evolving,zykov2007evolved"></dt-cite>, and evolving soft robots<dt-cite key="cheney2013unshackling,corucci2018evolving"></dt-cite> using indirect encoding<dt-cite key="neat,hyperneat,auerbach2010evolving,auerbach2011evolving,auerbach2010dynamic"></dt-cite>.
 
 <div style="text-align: center;">
-<!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/related_work.mp4" type="video/mp4"/></video>-->
-<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/related_work.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="assets/mp4/related_work.mp4" type="video/mp4"/></video>-->
+<video class="b-lazy" data-src="assets/mp4/related_work.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">Evolved Virtual Creatures<dt-cite key="sims1994evolving"></dt-cite>, Soft Robots<dt-cite key="cheney2013unshackling,corucci2018evolving"></dt-cite>, <i>Strandbeest</i><dt-cite key="jansen2008strandbeests"></dt-cite> and Passive Walkers<dt-cite key="mcgeer1990passive,collins2001three"></dt-cite>.</figcaption>
 </div>
 
@@ -117,8 +117,8 @@ ______
 <td width="50%"><figcaption style="text-align: left;">Original <i>Ant</i> agent:</figcaption></td>
 <td width="50%"><figcaption style="text-align: left;">Agent with learned design:</figcaption></td>
 </tr></table>
-<!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/ant_views.mp4" type="video/mp4"/></video>-->
-<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/ant_views.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="assets/mp4/ant_views.mp4" type="video/mp4"/></video>-->
+<video class="b-lazy" data-src="assets/mp4/ant_views.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 </div>
 
 In this work, we experiment on continuous control environments from Roboschool<dt-cite key="roboschool"></dt-cite>, based on the open source Bullet<dt-cite key="pybullet"></dt-cite> physics engine, and the Box2D<dt-cite key="box2d"></dt-cite> section of the OpenAI Gym<dt-cite key="openai_gym"></dt-cite> set of environments. For simplicity, we first present results of anecdotal examples obtained over a single representative experimental run to convey qualitative results such as morphology and its relationship to performance. A more comprehensive quantitative study based on multiple runs using different random seeds will be presented in a later section.
@@ -141,8 +141,8 @@ The above figure illustrates the learned agent design compared to the original d
 The Bipedal Walker series of environments is based on the Box2D<dt-cite key="box2d"></dt-cite> physics engine. Guided by LIDAR sensors, the agent is required to navigate across an environment of randomly generated terrain within a time limit, without falling over. The agent's payload -- its head, is supported by 2 legs. The top and bottom parts of each leg is controlled by two motor joints. In the easier *BipedalWalker-v2*<dt-cite key="bipedalwalker"></dt-cite> environment, the agent needs to travel across small random variations of a flat terrain. The task is considered solved if an agent obtains an average score greater than 300 points over 100 rollouts.
 
 <div style="text-align: center;">
-<!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/biped_compare_vs_augment.mp4" type="video/mp4"/></video>-->
-<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/biped_compare_vs_augment.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="assets/mp4/biped_compare_vs_augment.mp4" type="video/mp4"/></video>-->
+<video class="b-lazy" data-src="assets/mp4/biped_compare_vs_augment.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">Learning a policy to navigate forward in <i>BipedalWalker-v2</i> environment (left). Agent learns a body to allow it to bounce forward efficiently (right).</figcaption>
 </div>
 
@@ -157,8 +157,8 @@ Our population-based training experiments were conducted on 96-CPU core machines
 *BipedalWalkerHardcore-v2*
 
 <div style="text-align: center;">
-<!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard_all.mp4" type="video/mp4"/></video>-->
-<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard_all.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="assets/mp4/augmentbipedhard_all.mp4" type="video/mp4"/></video>-->
+<video class="b-lazy" data-src="assets/mp4/augmentbipedhard_all.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">Learned body to efficiently navigate <i>BipedalWalkerHardcore-v2</i><dt-cite key="bipedalwalkerhardcore"></dt-cite>.</figcaption>
 </div>
 
@@ -183,16 +183,16 @@ In this environment, our agent generally learns to develop longer, thinner legs,
 Allowing an agent to learn a better version of its body obviously enables it to achieve better performance. But what if we want to give back some of the additional performance gains, and also optimize also for desirable design properties that might not generally be beneficial for performance? For instance, we may want our agent to learn a design that utilizes the least amount of materials while still achieving satisfactory performance on the task. Here, we reward an agent for developing legs that are smaller in area, and augment its reward signal during training by scaling the rewards by a utility factor of $1+\log(\frac{\text{orig leg area}}{\text{new leg area}})$. We see that augmenting the reward encourages development of smaller legs:
 
 <div style="text-align: center;">
-<!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedsmalllegs.mp4" type="video/mp4"/></video>-->
-<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedsmalllegs.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="assets/mp4/augmentbipedsmalllegs.mp4" type="video/mp4"/></video>-->
+<video class="b-lazy" data-src="assets/mp4/augmentbipedsmalllegs.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">Agent rewarded for smaller legs for the task in <i>BipedalWalker-v2</i> environment.</figcaption>
 </div>
 
 This reward augmentation resulted in much a smaller agent that is still able to support the same payload. In the easier *BipedalWalker* task, given the simplicity of the task, the agent's leg dimensions eventually shrink to near the lower bound of $\sim$ 25\% of the original dimensions, with the exception of the heights of the top leg parts which settled at $\sim$ 35\% of the initial design, while still achieving an average (unaugmented) score of 323 $\pm$ 68. For this task, the leg area used is 8\% of the original design.
 
 <div style="text-align: center;">
-<!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhardsmalllegs_all.mp4" type="video/mp4"/></video>-->
-<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhardsmalllegs_all.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<!--<video autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;"><source src="assets/mp4/augmentbipedhardsmalllegs_all.mp4" type="video/mp4"/></video>-->
+<video class="b-lazy" data-src="assets/mp4/augmentbipedhardsmalllegs_all.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">When rewarded for small leg size, the agent learned a lean minimal design where every inch matters. It also learned movements that appear more insect-like. Here, the agent learns the smallest pair of legs that still can solve <i>BipedalWalkerHardcore-v2</i>.</figcaption>
 </div>
 
@@ -225,14 +225,14 @@ As these models may take up to several days to train for a particular experiment
 <div style="text-align: center;">
 <table style="width:100%;" cellspacing="0" cellpadding="0"><tr>
   <tr>
-  <td><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard.a.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
-  <td><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard.b.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
-  <td><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard.c.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
+  <td><video class="b-lazy" data-src="assets/mp4/augmentbipedhard.a.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
+  <td><video class="b-lazy" data-src="assets/mp4/augmentbipedhard.b.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
+  <td><video class="b-lazy" data-src="assets/mp4/augmentbipedhard.c.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
   </tr>
   <tr>
-  <td><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhardsmalllegs.a.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
-  <td><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhardsmalllegs.b.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
-  <td><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhardsmalllegs.c.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
+  <td><video class="b-lazy" data-src="assets/mp4/augmentbipedhardsmalllegs.a.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
+  <td><video class="b-lazy" data-src="assets/mp4/augmentbipedhardsmalllegs.b.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
+  <td><video class="b-lazy" data-src="assets/mp4/augmentbipedhardsmalllegs.c.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video></td>
   </tr>
 </table>
 <figcaption style="text-align: left;">Variations of designs in <i>BipedalWalkerHardcore-v2</i> (top) and also rewarding the agent for smaller legs (bottom).</figcaption>
@@ -265,13 +265,13 @@ For those of you who made it this far, we would like to share some “negative r
 We also tried to let the RL algorithm discover new designs without any constraints, and found that it would usually create longer rear legs during the initial learning phase designed so it can tumble over further down the map to achieve higher rewards.
 
 <div style="text-align: center;">
-<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedsmalllegs.lognormal.blooper.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="assets/mp4/augmentbipedsmalllegs.lognormal.blooper.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">Without any design constraints, it develops very long rear legs so it can finish further down the map.</figcaption>
 </div>
 
 Using a lognormal scaling factor of $\exp(w_k)$ made it easier for the RL algorithm to come up with an extremely tall bipedal walker agent that “solves” the task by simply falling over and landing at the exit:
 
 <div style="text-align: center;">
-<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/designrl/augmentbipedhard.lognormal.blooper.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="assets/mp4/augmentbipedhard.lognormal.blooper.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">If we remove all design constraints, the optimizer came up with a really tall bipedal walker robot that “solves” the task by simply falling over and landing near the exit.</figcaption>
 </div>
