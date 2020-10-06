@@ -82,11 +82,11 @@ ______
 
 In this section we provide an overview of the population-based policy gradient method described in Section 6 of William's REINFORCE<dt-cite key="williams1992"></dt-cite> paper for learning a parameter vector $w$ in a reinforcement learning environment. In this approach, $w$ is sampled from a probability distribution $\pi(w, \theta)$ parameterized by $\theta$. We define the expected cumulative reward $R$ as:
 
-$J(\theta) = E_{\theta}[R(w)] = \int R(w) \; \pi(w, \theta) \; dw$
+$J(\theta) = E_{w}[R(w)] = \int R(w) \; \pi(w, \theta) \; dw$
 
 Using the *log-likelihood trick* allows us to write the gradient of $J(\theta)$ with respect to $\theta$:
 
-$\nabla_{\theta} J(\theta) = E_{\theta}[ \; R(w)  \; \nabla_{\theta} \log \pi(w, \theta) \; ]$
+$\nabla_{\theta} J(\theta) = E_{w}[ \; R(w)  \; \nabla_{\theta} \log \pi(w, \theta) \; ]$
 
 In a population size of $N$, where we have solutions $w^1$, $w^2$, ..., $w^N$, we can estimate this as:
 
